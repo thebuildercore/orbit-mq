@@ -1,0 +1,13 @@
+[package]
+name = "orbit-ingress"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+orbit-core = { path = "../orbit-core" }
+tokio = { workspace = true }
+tonic = "0.11"
+prost = "0.12"
+
+[build-dependencies]
+tonic-build = "0.11"

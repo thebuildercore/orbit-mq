@@ -1,0 +1,19 @@
+syntax = "proto3";
+package orbit;
+
+// The gRPC Service exposed to satellite microservices
+service Broker {
+    rpc Publish (PublishRequest) returns (PublishResponse);
+}
+
+message PublishRequest {
+    // 0 = Life Support, 1 = Thrusters, 2 = General, 3 = Media
+    uint32 priority = 1;
+    string source = 2;
+    bytes payload = 3;
+}
+
+message PublishResponse {
+    bool success = 1;
+    string message = 2;
+}

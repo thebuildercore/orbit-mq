@@ -1,0 +1,8 @@
+[package]
+name = "orbit-storage"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+memmap2 = { workspace = true }
+orbit-core = { path = "../orbit-core" }

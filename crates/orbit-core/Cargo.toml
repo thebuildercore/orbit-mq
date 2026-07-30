@@ -1,0 +1,9 @@
+[package]
+name = "orbit-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+postcard = { version = "1.0.8", features = ["alloc"] }
+thiserror = "1.0"

@@ -1,0 +1,13 @@
+[package]
+name = "orbit-broker"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+orbit-core = { path = "../orbit-core" }
+orbit-priority = { path = "../orbit-priority" }
+orbit-storage = { path = "../orbit-storage" }
+orbit-ingress = { path = "../orbit-ingress" }
+orbit-uplink = { path = "../orbit-uplink" }
+tokio = { workspace = true }
+tonic = "0.11"
