@@ -6,3 +6,11 @@ edition = "2021"
 [dependencies]
 memmap2 = { workspace = true }
 orbit-core = { path = "../orbit-core" }
+
+[dev-dependencies]
+criterion = "0.5"
+tempfile = "3.8"
+
+[[bench]]
+name = "wal_benchmark"
+harness = false

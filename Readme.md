@@ -6,6 +6,27 @@ Inspired by the networking constraints of the NASA Lunar Gateway, OrbitMQ bridge
 
 ---
 
+## Performance Benchmarks: Zero-Copy WAL vs Standard I/O
+
+OrbitMQ utilizes a memory-mapped, zero-copy architecture (`MmapWal`) to bypass OS kernel context switches during critical telemetry buffering. 
+
+In standard Criterion benchmarks against standard file system I/O (`std::fs::File`), the zero-copy architecture demonstrates a **77.3% reduction in write latency** per packet.
+
+```text
+Telemetry_Storage_Throughput/OrbitMQ_Mmap_Append
+                        time:   [652.53 ns 692.70 ns 738.04 ns]
+
+Telemetry_Storage_Throughput/Standard_Syscall_Write
+                        time:   [2.9179 µs 3.0517 µs 3.1778 µs]
+
+                        Standard Syscall Write: ~3,051 ns (3.05 µs) per packet
+
+                        OrbitMQ Mmap Append: ~692 ns per packet
+
+                        Net Result: 4.4x throughput increase, saving crucial CPU cycles on power-constrained flight computers.
+
+```
+
 ## 🏗️ Architecture & Core Features
 
 OrbitMQ decouples the *generation* of data from its *transmission*, solving the brutal physics of space communications (e.g., planetary blockages and communication windows).
@@ -34,6 +55,8 @@ OrbitMQ decouples the *generation* of data from its *transmission*, solving the 
                               ▼
                      [ GROUND STATION ]
 ```
+
+
 
 ### Core Engineering Features
 

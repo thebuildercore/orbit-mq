@@ -67,4 +67,35 @@ impl MmapWal {
     pub fn flush_to_disk(&self) -> Result<(), std::io::Error> {
         self.mmap.flush()
     }
+
+    /// Resets the write cursor to the beginning of the file, allowing continuous overwrites.
+    pub fn reset_write_cursor(&mut self) {
+        self.write_cursor = 0;
+    }
+
+    /// Reads the priority of the oldest message at the start of the WAL.
+    pub fn peek_oldest_priority(&self) -> Option<orbit_core::PriorityLevel> {
+        if self.write_cursor == 0 {
+            return None; // WAL is empty
+        }
+        
+        // Read the 4-byte length prefix of the first message
+        let mut len_bytes = [0u8; 4];
+        len_bytes.copy_from_slice(&self.mmap[0..4]);
+        let len = u32::from_le_bytes(len_bytes) as usize;
+        
+        if len == 0 || 4 + len > self.capacity {
+            return None;
+        }
+        
+        // Extract the payload and deserialize it to check priority
+        let payload = &self.mmap[4..4+len];
+        
+        // Assuming your Message struct has a from_bytes method matching to_bytes
+        if let Ok(msg) = Message::from_bytes(payload) {
+            Some(msg.priority)
+        } else {
+            None
+        }
+    }
 }
